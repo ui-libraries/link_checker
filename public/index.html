@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Checker</title>
+    <link rel="stylesheet" href="/link_checker/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Link Checker</h1>
+        <p>Paste URLs below (one per line) and click "Check Links" to get their status.</p>
+        <textarea id="urlInput" placeholder="Enter URLs here, one per line..."></textarea>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 1em; margin-top: 1em;">
+            <button id="check-links-button" class="button-theme">Check Links</button>
+            <button id="clear-links-button" class="button-theme">Clear Links</button>
+        </div>
+        
+        <div id="loading" style="display:none;">Checking links, please wait...</div>
+
+        <div id="table-controls" style="display: none; margin-top: 1em;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <label for="filter">Filter Links:</label>
+                    <select id="filter" style="margin-left: 5px;">
+                        <option value="all">All</option>
+                        <option value="alive">Alive (200)</option>
+                        <option value="dead">Dead (404)</option>
+                        <option value="forbidden">Forbidden (403)</option>
+                        <option value="error">Error</option>
+                    </select>                                                       
+                </div>
+                <div style="flex-grow: 1; margin-left: 20px;">
+                    <input type="text" id="search-input" placeholder="Search URLs..." style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+            </div>
+            <button id="export-button" class="button-theme" style="margin-top: 1em;">Export to CSV</button>
+        </div>
+        
+        <table id="resultsTable" style="display:none;">
+            <thead>
+                <tr>
+                    <th>URL</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div id="loadingContainer">
+            <div id="progressBarContainer">
+                <div id="progressBar">0%</div>
+            </div>
+        </div>
+
+        <div id="pagination" style="margin-top: 1em; text-align: center;"></div>
+    </div>
+
+    <script src="/link_checker/script.js"></script>
+</body>
+</html>

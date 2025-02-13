@@ -279,3 +279,39 @@ th {
     color: blue;
     text-decoration: underline;
 }
+
+.toggle-error {
+    background: none;
+    background-color: transparent !important;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    margin-left: 10px;
+    color: #000000;
+    padding: 0;
+  }
+  
+  .toggle-error:hover {
+    color: blue;
+  }
+  
+  .toggle-error::before {
+    content: "\f06e"; 
+    font-family: "Font Awesome 6 Free"; 
+    font-weight: 900;
+    font-size: 1em;
+  }
+  
+  .error-details {
+    background-color: #d9edf7;  
+    color: #31708f;             
+    font-size: 1em;
+    padding: 8px;
+    border: 1px solid #bce8f1;  
+  }
+  
+  .error-details td::before {
+    content: "Error message: ";
+    font-weight: bold;
+  }
+

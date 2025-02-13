@@ -53,24 +53,52 @@ document.addEventListener("DOMContentLoaded", () => {
     
         resultsBody.innerHTML = "";
     
-        paginatedResults.forEach(({ url, status, statusCode }) => {
+        paginatedResults.forEach(({ url, status, statusCode, error }) => {
             const row = document.createElement("tr");
-    
-            // styles for error, forbidden, and dead
-            const statusClass =
-                status === "forbidden" ? "bad-status forbidden-status" :
-                status === "dead" ? "bad-status" :
-                status === "error" ? "error-status" : "";
-    
+
+            let statusClass = "";
+            if (status === "forbidden") {
+              statusClass = "bad-status forbidden-status";
+            } else if (status === "dead") {
+              statusClass = "bad-status";
+            } else if (status === "error") {
+              statusClass = "error-status";
+            } else {
+              statusClass = "";
+            }
+            
             row.innerHTML = `
-                <td>
-                    <a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>
-                </td>
-                <td class="${statusClass}">
-                    ${status} (${statusCode || "N/A"})
-                </td>
-            `;
+    <td>
+        <a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>
+    </td>
+    <td class="${statusClass}">
+        ${status === "error" ? status : `${status} (${statusCode || "N/A"})`}
+        ${error ? '<button class="toggle-error" title="Toggle Error Details"></button>' : ""}
+    </td>
+`;
+
             resultsBody.appendChild(row);
+    
+            // If there's an error message, show the details
+            if (error) {
+                const errorRow = document.createElement("tr");
+                errorRow.classList.add("error-details");
+                errorRow.style.display = "none";
+    
+                const errorCell = document.createElement("td");
+                errorCell.colSpan = 2;
+                errorCell.textContent = error;
+                errorRow.appendChild(errorCell);
+                resultsBody.appendChild(errorRow);
+    
+                row.querySelector(".toggle-error").addEventListener("click", function () {
+                    if (errorRow.style.display === "none") {
+                        errorRow.style.display = "";
+                    } else {
+                        errorRow.style.display = "none";
+                    }
+                });
+            }
         });
     
         resultsTable.style.display = "table";
@@ -83,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const totalPages = Math.ceil(total / pageSize);
         const maxVisiblePages = 5;
-
+ 
         if (totalPages <= 1) return;
 
         const prevButton = document.createElement("button");
@@ -96,8 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
         pagination.appendChild(prevButton);
-
-	   
+  
         const addPageButton = (page) => {
             const pageButton = document.createElement("button");
             pageButton.textContent = page;
@@ -275,3 +302,4 @@ document.addEventListener("DOMContentLoaded", () => {
     
     document.getElementById("export-button").addEventListener("click", exportToCSV);
 });
+

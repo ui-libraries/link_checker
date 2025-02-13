@@ -17,7 +17,7 @@ app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 app.use("/link_checker", express.static(publicPath));
 
-app.get("/link_checker", (req, res) => { 
+app.get("", (req, res) => { 
 	res.sendFile(path.join(publicPath, "index.html"));
 });
 
@@ -76,11 +76,15 @@ const checkLink = async (url) => {
             statusCode: response.status,
         };
     } catch (error) {
+        let errorMsg = error.message;
+        if (error.code === "ECONNABORTED") {
+          errorMsg = "Connection timed out.";
+        }
         return {
-            url,
-            status: "dead",
-            statusCode: "N/A",
-            error: error.message,
+          url,
+          status: "dead",
+          statusCode: "N/A",
+          error: errorMsg,
         };
     } finally {
         // subtract the counter when the request finishes
@@ -114,3 +118,4 @@ app.post("/link_checker/check-links", async (req, res) => {
 // Start server
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+

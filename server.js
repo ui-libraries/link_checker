@@ -17,7 +17,7 @@ app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 app.use("/link_checker", express.static(publicPath));
 
-app.get("", (req, res) => { 
+app.get("/link_checker", (req, res) => { 
 	res.sendFile(path.join(publicPath, "index.html"));
 });
 
